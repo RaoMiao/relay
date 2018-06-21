@@ -22,17 +22,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"math/big"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/Loopring/relay/config"
 	"github.com/Loopring/relay/log"
 	"github.com/Loopring/relay/market"
 	"github.com/Loopring/relay/market/util"
 	"github.com/Loopring/relay/types"
 	"github.com/ethereum/go-ethereum/common"
-	"io/ioutil"
-	"math/big"
-	"net/http"
-	"strings"
-	"time"
 )
 
 type LegalCurrency int
@@ -301,11 +302,12 @@ func (p *CapProvider_CoinMarketCap) syncMarketCap() error {
 				if tokenAddress, exists := p.idToAddress[strings.ToUpper(tokenCap.Id)]; exists {
 					p.tokenMarketCaps[tokenAddress].PriceUsd = tokenCap.PriceUsd
 					p.tokenMarketCaps[tokenAddress].PriceBtc = tokenCap.PriceBtc
+					tokenCap.PriceCny.SetFloat64(1.0)
 					p.tokenMarketCaps[tokenAddress].PriceCny = tokenCap.PriceCny
 					p.tokenMarketCaps[tokenAddress].Volume24HCNY = tokenCap.Volume24HCNY
 					p.tokenMarketCaps[tokenAddress].Volume24HUSD = tokenCap.Volume24HUSD
 					p.tokenMarketCaps[tokenAddress].LastUpdated = tokenCap.LastUpdated
-					log.Debugf("token:%s, priceUsd:%s", tokenAddress.Hex(), tokenCap.PriceUsd.FloatString(2))
+					log.Debugf("token:%s, priceUsd:%s", tokenAddress.Hex(), tokenCap.PriceCny.FloatString(2))
 					syncedTokens[p.tokenMarketCaps[tokenAddress].Address] = true
 				}
 			}

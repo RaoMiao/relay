@@ -21,6 +21,9 @@ package market
 import (
 	"encoding/json"
 	"errors"
+	"math/big"
+	"strings"
+
 	rcache "github.com/Loopring/relay/cache"
 	"github.com/Loopring/relay/config"
 	"github.com/Loopring/relay/ethaccessor"
@@ -29,8 +32,6 @@ import (
 	"github.com/Loopring/relay/market/util"
 	"github.com/Loopring/relay/types"
 	"github.com/ethereum/go-ethereum/common"
-	"math/big"
-	"strings"
 )
 
 const (
@@ -186,6 +187,7 @@ func (accountBalances AccountBalances) syncFromEthNode(tokens ...common.Address)
 		if nil != req.BalanceErr {
 			log.Errorf("get balance failed, owner:%s, token:%s, err:%s", req.Owner.Hex(), req.Token.Hex(), req.BalanceErr.Error())
 		} else {
+			log.Errorf("get balance failed, owner:%s, token:%s, :%v", req.Owner.Hex(), req.Token.Hex(), req.Balance.Int64())
 			balance := Balance{}
 			balance.Balance = &req.Balance
 			//balance.LastBlock =

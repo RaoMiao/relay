@@ -15,7 +15,7 @@
             "host": "127.0.0.1",
             "program": "${fileDirname}",
             "env": {},
-            "args": ["--unlocks=0x3a01521a7dde0ad40ca22d137e69edb9ef625003", "--passwords=asdf1234"],
+            "args": ["--unlocks=0x1280cd66d37b57ab5ae5102024688d6f59c1e1e4", "--passwords=asdf1234"],
             "showLog": true
         }
     ]

@@ -4,6 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
+	"reflect"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/Loopring/relay/ethaccessor"
 	"github.com/Loopring/relay/eventemiter"
 	"github.com/Loopring/relay/log"
@@ -14,11 +20,6 @@ import (
 	"github.com/googollee/go-socket.io"
 	"github.com/robfig/cron"
 	"gopkg.in/googollee/go-engine.io.v1"
-	"net/http"
-	"reflect"
-	"strings"
-	"sync"
-	"time"
 )
 
 type BusinessType int
@@ -335,6 +336,7 @@ func (so *SocketIOServiceImpl) handleWith(eventType string, query interface{}, m
 
 func (so *SocketIOServiceImpl) handleAfterEmit(eventType string, query interface{}, methodName string, conn socketio.Conn, ctx string) {
 	result := so.handleWith(eventType, query, methodName, ctx)
+	fmt.Println(result)
 	conn.Emit(eventType+EventPostfixRes, result)
 }
 
