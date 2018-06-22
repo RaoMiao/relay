@@ -20,9 +20,13 @@ package miner
 
 import (
 	"errors"
+	"fmt"
 	"math/big"
 
 	"encoding/json"
+	"strconv"
+	"time"
+
 	"github.com/Loopring/relay/cache"
 	"github.com/Loopring/relay/config"
 	"github.com/Loopring/relay/dao"
@@ -33,8 +37,6 @@ import (
 	"github.com/Loopring/relay/types"
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/common"
-	"strconv"
-	"time"
 )
 
 const SubmitRingMethod_LastId = "submitringmethod_lastid"
@@ -393,6 +395,7 @@ func (submitter *RingSubmitter) GenerateRingSubmitInfo(ringState *types.Ring) (*
 	} else {
 		ringSubmitInfo.Miner = senderAddress
 	}
+	fmt.Println(ringSubmitInfo.Miner)
 	//submitter.computeReceivedAndSelectMiner(ringSubmitInfo)
 	if protocolData, err := ethaccessor.GenerateSubmitRingMethodInputsData(ringState, submitter.feeReceipt, protocolAbi); nil != err {
 		return nil, err
@@ -406,6 +409,7 @@ func (submitter *RingSubmitter) GenerateRingSubmitInfo(ringState *types.Ring) (*
 	lastTime := ringSubmitInfo.RawRing.ValidSinceTime()
 	if submitter.currentBlockTime > 0 && lastTime <= submitter.currentBlockTime {
 		var err error
+		fmt.Println(ringSubmitInfo.ProtocolAddress.Hex())
 		_, _, err = ethaccessor.EstimateGas(ringSubmitInfo.ProtocolData, ringSubmitInfo.ProtocolAddress, "latest")
 		//ringSubmitInfo.ProtocolGas, ringSubmitInfo.ProtocolGasPrice, err = ethaccessor.EstimateGas(ringSubmitInfo.ProtocolData, protocolAddress, "latest")
 		if nil != err {

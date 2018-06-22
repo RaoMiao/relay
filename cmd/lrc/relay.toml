@@ -65,7 +65,7 @@ name = "Loopring corporation"
     fetch_tx_retry_count = 120
 
 [extractor]
-    start_block_number = 5354906
+    start_block_number = 100
     end_block_number = 0
     confirm_block_number = 5
     fork_waiting_time = 10
